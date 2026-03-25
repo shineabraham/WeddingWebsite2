@@ -62,7 +62,7 @@ export default function Entrance({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-obsidian"
+      className="entrance-fullscreen z-[200] flex items-center justify-center overflow-hidden bg-obsidian"
       exit={{ opacity: 0 }}
       transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
     >
@@ -72,7 +72,7 @@ export default function Entrance({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,_rgba(184,134,11,0.05)_0%,_transparent_40%)]" />
       </div>
 
-      {/* Particles — fewer on mobile */}
+      {/* Particles */}
       {particles.map((p) => (
         <GoldParticle key={p.id} delay={p.delay} x={p.x} y={p.y} />
       ))}
@@ -103,7 +103,7 @@ export default function Entrance({
         </svg>
       </motion.div>
 
-      {/* Decorative border frame — inset adapts to screen */}
+      {/* Decorative border frame */}
       <motion.div
         className="absolute inset-4 border border-gold/[0.08] sm:inset-8 md:inset-16 lg:inset-24"
         initial={{ opacity: 0 }}
@@ -111,8 +111,8 @@ export default function Entrance({
         transition={{ delay: 1.8, duration: 2 }}
       />
 
-      {/* Main content — overflow scroll on tiny screens */}
-      <div className="relative z-10 flex max-h-[90vh] flex-col items-center overflow-y-auto px-6 py-8 text-center sm:py-0">
+      {/* Main content — safe-area aware, flexbox centered */}
+      <div className="relative z-10 flex flex-col items-center px-6 text-center" style={{ paddingTop: "env(safe-area-inset-top, 0px)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         {/* Top ornamental divider */}
         <motion.div
           className="mb-4 flex items-center gap-3 sm:mb-6 sm:gap-4"
@@ -137,7 +137,7 @@ export default function Entrance({
           Together with their families
         </motion.p>
 
-        {/* Monogram ring — smaller on mobile */}
+        {/* Monogram ring */}
         <motion.div
           className="relative mb-5 sm:mb-8"
           initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
@@ -219,7 +219,7 @@ export default function Entrance({
           {tagline}
         </motion.p>
 
-        {/* Enter button — larger tap target on mobile */}
+        {/* Enter button */}
         <motion.button
           className="group relative mt-8 overflow-hidden border border-gold/40 bg-transparent px-10 py-4 font-body text-[10px] uppercase tracking-ultrawide text-gold transition-colors hover:border-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 sm:mt-14 sm:px-14 sm:py-5 sm:text-[11px]"
           onClick={onEnter}
@@ -239,7 +239,7 @@ export default function Entrance({
           />
         </motion.button>
 
-        {/* Scroll hint mouse — hidden on mobile */}
+        {/* Scroll hint — hidden on mobile */}
         <motion.div
           className="mt-6 hidden flex-col items-center sm:flex sm:mt-10"
           initial={{ opacity: 0 }}

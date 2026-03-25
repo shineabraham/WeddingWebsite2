@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useSpring,
+  AnimatePresence,
 } from "framer-motion";
 
 interface Hero3DProps {
@@ -14,6 +15,77 @@ interface Hero3DProps {
   tagline: string;
   date: string;
   galleryImages: { src: string; alt: string }[];
+}
+
+function MobileImageCarousel({ images }: { images: { src: string; alt: string }[] }) {
+  const [current, setCurrent] = useState(0);
+  const displayImages = images.slice(0, 4);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % displayImages.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [displayImages.length]);
+
+  return (
+    <div className="relative w-full px-4">
+      {/* Stacked card carousel */}
+      <div className="relative mx-auto h-[45vh] max-h-[360px] w-full max-w-[300px]">
+        <AnimatePresence mode="popLayout">
+          {displayImages.map((img, i) => {
+            const offset = (i - current + displayImages.length) % displayImages.length;
+            if (offset > 2) return null;
+
+            return (
+              <motion.div
+                key={`${img.src}-${i}`}
+                className="absolute inset-0 overflow-hidden border border-gold/20"
+                initial={{ scale: 0.85, y: 40, opacity: 0, rotateZ: offset === 1 ? -3 : offset === 2 ? 3 : 0 }}
+                animate={{
+                  scale: offset === 0 ? 1 : offset === 1 ? 0.93 : 0.86,
+                  y: offset === 0 ? 0 : offset === 1 ? -16 : -28,
+                  x: offset === 0 ? 0 : offset === 1 ? 8 : -8,
+                  opacity: offset === 0 ? 1 : offset === 1 ? 0.6 : 0.3,
+                  rotateZ: offset === 0 ? 0 : offset === 1 ? 2.5 : -2.5,
+                  zIndex: 3 - offset,
+                }}
+                exit={{ scale: 0.8, y: 50, opacity: 0, rotateZ: -5 }}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                style={{ zIndex: 3 - offset }}
+                onClick={() => setCurrent((current + 1) % displayImages.length)}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-obsidian/10" />
+                <div className="absolute inset-0 bg-gold/[0.03] mix-blend-multiply" />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="mt-4 flex items-center justify-center gap-2">
+        {displayImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              i === current ? "w-6 bg-gold" : "w-1.5 bg-gold/30"
+            }`}
+            aria-label={`View image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function Hero3D({
@@ -35,12 +107,9 @@ export default function Hero3D({
     damping: 30,
   });
 
-  // Parallax for the image gallery section (bottom half)
   const galleryY = useTransform(smoothProgress, [0, 1], ["0%", "-30%"]);
   const galleryScale = useTransform(smoothProgress, [0, 1], [1, 1.15]);
   const galleryOpacity = useTransform(smoothProgress, [0.3, 0.8], [1, 0]);
-
-  // Text fades out on scroll
   const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
   const textY = useTransform(smoothProgress, [0, 0.3], ["0%", "-10%"]);
 
@@ -52,28 +121,27 @@ export default function Hero3D({
   });
 
   return (
-    <section ref={containerRef} className="relative h-[200vh]">
+    <section ref={containerRef} className="relative h-[200vh] snap-section-hero">
       <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden bg-obsidian">
         {/* Ambient gradient */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(184,134,11,0.08)_0%,_transparent_70%)]" />
         </div>
 
-        {/* ===== TOP: Text area — clear, no image behind ===== */}
+        {/* ===== TOP: Text area ===== */}
         <motion.div
-          className="relative z-20 flex flex-shrink-0 flex-col items-center justify-center px-6 pt-16 pb-8 text-center md:pt-20 md:pb-10"
+          className="relative z-20 flex flex-shrink-0 flex-col items-center justify-center px-6 pt-14 pb-4 text-center sm:pt-16 sm:pb-8 md:pt-20 md:pb-10"
           style={{ opacity: textOpacity, y: textY }}
         >
-          {/* Decorative top line */}
           <motion.div
-            className="mb-4 h-px w-16 bg-gradient-to-r from-transparent via-gold/50 to-transparent md:mb-6 md:w-20"
+            className="mb-3 h-px w-16 bg-gradient-to-r from-transparent via-gold/50 to-transparent md:mb-6 md:w-20"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.3, duration: 1.2 }}
           />
 
           <motion.p
-            className="mb-3 font-body text-[10px] uppercase tracking-ultrawide text-gold md:mb-4 md:text-[11px]"
+            className="mb-2 font-body text-[10px] uppercase tracking-ultrawide text-gold sm:mb-3 md:mb-4 md:text-[11px]"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -91,7 +159,7 @@ export default function Hero3D({
           </motion.h2>
 
           <motion.div
-            className="my-2 flex items-center gap-3 md:my-3"
+            className="my-1.5 flex items-center gap-3 sm:my-2 md:my-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
@@ -111,7 +179,7 @@ export default function Hero3D({
           </motion.h2>
 
           <motion.p
-            className="mt-3 font-display text-sm italic text-silk/70 md:mt-4 md:text-lg"
+            className="mt-2 font-display text-sm italic text-silk/70 sm:mt-3 md:mt-4 md:text-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
@@ -119,25 +187,29 @@ export default function Hero3D({
             {tagline}
           </motion.p>
 
-          {/* Decorative bottom line */}
           <motion.div
-            className="mt-4 h-px w-12 bg-gradient-to-r from-transparent via-gold/30 to-transparent md:mt-6 md:w-16"
+            className="mt-3 h-px w-12 bg-gradient-to-r from-transparent via-gold/30 to-transparent sm:mt-4 md:mt-6 md:w-16"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 1.0, duration: 1 }}
           />
         </motion.div>
 
-        {/* ===== BOTTOM: Image gallery — fills remaining space ===== */}
+        {/* ===== BOTTOM: Image gallery ===== */}
         <motion.div
-          className="relative z-10 flex flex-1 items-center justify-center overflow-hidden px-4 pb-6 md:px-8 md:pb-10"
+          className="relative z-10 flex flex-1 items-center justify-center overflow-hidden px-0 pb-6 sm:px-4 md:px-8 md:pb-10"
           style={{ y: galleryY, scale: galleryScale, opacity: galleryOpacity }}
         >
-          {/* Mobile: single featured image + 2 smaller */}
-          <div className="flex h-full w-full max-w-5xl items-center justify-center gap-3 md:gap-5">
-            {/* Left small image — hidden on very small screens */}
+          {/* Mobile: stacked card carousel */}
+          <div className="block sm:hidden w-full">
+            <MobileImageCarousel images={galleryImages} />
+          </div>
+
+          {/* Desktop: triptych layout */}
+          <div className="hidden sm:flex h-full w-full max-w-5xl items-center justify-center gap-3 md:gap-5">
+            {/* Left image */}
             <motion.div
-              className="hidden h-[55%] w-[22%] overflow-hidden border border-gold/15 sm:block"
+              className="h-[55%] w-[22%] overflow-hidden border border-gold/15"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.4, duration: 1 }}
@@ -150,9 +222,9 @@ export default function Hero3D({
               <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 to-transparent" />
             </motion.div>
 
-            {/* Center large image */}
+            {/* Center image */}
             <motion.div
-              className="relative h-[70%] w-[65%] overflow-hidden border border-gold/20 sm:h-[75%] sm:w-[40%]"
+              className="relative h-[75%] w-[40%] overflow-hidden border border-gold/20"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 1 }}
@@ -166,9 +238,9 @@ export default function Hero3D({
               <div className="absolute inset-0 bg-gold/[0.03] mix-blend-multiply" />
             </motion.div>
 
-            {/* Right small image — hidden on very small screens */}
+            {/* Right image */}
             <motion.div
-              className="hidden h-[55%] w-[22%] overflow-hidden border border-gold/15 sm:block"
+              className="h-[55%] w-[22%] overflow-hidden border border-gold/15"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.5, duration: 1 }}
@@ -182,7 +254,7 @@ export default function Hero3D({
             </motion.div>
           </div>
 
-          {/* Scroll indicator — overlaid at bottom of gallery */}
+          {/* Scroll indicator */}
           <motion.div
             className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center md:bottom-8"
             animate={{ y: [0, 6, 0] }}
