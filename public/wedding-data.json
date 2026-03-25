@@ -1,0 +1,143 @@
+{
+  "couple": {
+    "partner1": {
+      "firstName": "Alexander",
+      "lastName": "Whitmore"
+    },
+    "partner2": {
+      "firstName": "Isabella",
+      "lastName": "Chen"
+    }
+  },
+  "date": {
+    "ceremony": "2026-09-12T16:00:00",
+    "reception": "2026-09-12T18:30:00"
+  },
+  "venue": {
+    "ceremony": {
+      "name": "The Grand Atrium",
+      "address": "42 Palazzo Drive, Napa Valley, CA",
+      "coordinates": { "lat": 38.2975, "lng": -122.2869 }
+    },
+    "reception": {
+      "name": "Villa Solara Estate",
+      "address": "88 Vineyard Lane, Napa Valley, CA",
+      "coordinates": { "lat": 38.3012, "lng": -122.2901 }
+    }
+  },
+  "tagline": "Two souls, one eternal promise",
+  "story": "What began as a chance encounter at a rain-soaked bookshop in Florence has blossomed into a love story that spans continents and defies time. Alexander and Isabella invite you to witness the next chapter of their journey.",
+  "timeline": [
+    {
+      "time": "3:30 PM",
+      "title": "Guest Arrival",
+      "description": "Welcome cocktails & hors d'oeuvres at the Grand Atrium terrace",
+      "icon": "champagne"
+    },
+    {
+      "time": "4:00 PM",
+      "title": "The Ceremony",
+      "description": "Exchange of vows beneath the century-old oak canopy",
+      "icon": "rings"
+    },
+    {
+      "time": "5:00 PM",
+      "title": "Golden Hour",
+      "description": "Sunset portraits & garden cocktail reception",
+      "icon": "camera"
+    },
+    {
+      "time": "6:30 PM",
+      "title": "The Reception",
+      "description": "Dinner, toasts, and celebration at Villa Solara Estate",
+      "icon": "dinner"
+    },
+    {
+      "time": "9:00 PM",
+      "title": "First Dance",
+      "description": "The couple takes the floor under a canopy of stars",
+      "icon": "music"
+    },
+    {
+      "time": "10:00 PM",
+      "title": "Late Night Revelry",
+      "description": "Live band, dessert bar & dancing until midnight",
+      "icon": "party"
+    }
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
+      "alt": "Couple portrait",
+      "caption": "Florence, where it all began"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80",
+      "alt": "Engagement photo",
+      "caption": "The moment she said yes"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80",
+      "alt": "Venue exterior",
+      "caption": "Villa Solara at golden hour"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "alt": "Detail shot",
+      "caption": "Every detail, a love letter"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
+      "alt": "Celebration",
+      "caption": "Joy, uncontained"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80",
+      "alt": "Romantic moment",
+      "caption": "Written in the stars"
+    }
+  ],
+  "rsvp": {
+    "deadline": "2026-08-01",
+    "questions": [
+      {
+        "id": "name",
+        "type": "text",
+        "label": "Who are we celebrating with?",
+        "placeholder": "Your full name"
+      },
+      {
+        "id": "email",
+        "type": "email",
+        "label": "Where shall we send the details?",
+        "placeholder": "your@email.com"
+      },
+      {
+        "id": "attending",
+        "type": "select",
+        "label": "Will you join us on this magical day?",
+        "options": ["Joyfully Accepting", "Regretfully Declining"]
+      },
+      {
+        "id": "guests",
+        "type": "number",
+        "label": "How many souls in your party?",
+        "placeholder": "1"
+      },
+      {
+        "id": "dietary",
+        "type": "text",
+        "label": "Any dietary secrets we should know?",
+        "placeholder": "Allergies, preferences, or requests"
+      },
+      {
+        "id": "song",
+        "type": "text",
+        "label": "What song will get you on the dancefloor?",
+        "placeholder": "Artist — Song title"
+      }
+    ]
+  },
+  "dressCode": "Black Tie Optional",
+  "hashtag": "#AlexAndIsabella2026"
+}

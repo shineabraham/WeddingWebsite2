@@ -1,101 +1,152 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import type { WeddingData } from "@/lib/data";
+
+import Entrance from "@/components/Entrance";
+import Hero3D from "@/components/Hero3D";
+import HUD from "@/components/HUD";
+import StorySection from "@/components/StorySection";
+import QuoteSection from "@/components/QuoteSection";
+import CountdownSection from "@/components/CountdownSection";
+import Gallery from "@/components/Gallery";
+import ParallaxImage from "@/components/ParallaxImage";
+import Timeline from "@/components/Timeline";
+import VenueSection from "@/components/VenueSection";
+import RSVPForm from "@/components/RSVPForm";
+import Footer from "@/components/Footer";
+import SectionDivider from "@/components/SectionDivider";
+import GrainOverlay from "@/components/GrainOverlay";
+import CursorFollower from "@/components/CursorFollower";
+import FloatingParticles from "@/components/FloatingParticles";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [data, setData] = useState<WeddingData | null>(null);
+  const [entered, setEntered] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    fetch("/wedding-data.json")
+      .then((res) => res.json())
+      .then(setData);
+  }, []);
+
+  if (!data) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-obsidian">
+        <div className="flex flex-col items-center">
+          <div className="h-px w-12 animate-gold-shimmer bg-gold/40" />
+          <p className="mt-4 font-body text-[10px] uppercase tracking-ultrawide text-gold/70">
+            Loading
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </div>
+    );
+  }
+
+  const { couple, date, venue, tagline, story, timeline, gallery, rsvp, dressCode, hashtag } =
+    data;
+
+  return (
+    <main>
+      <GrainOverlay />
+      <CursorFollower />
+
+      {/* Entrance gate — always first on load/refresh */}
+      <AnimatePresence>
+        {!entered && (
+          <Entrance
+            partner1={couple.partner1.firstName}
+            partner2={couple.partner2.firstName}
+            date={date.ceremony}
+            tagline={tagline}
+            onEnter={() => {
+              window.scrollTo(0, 0);
+              setEntered(true);
+            }}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        )}
+      </AnimatePresence>
+
+      {/* Main site — only renders after entering */}
+      {entered && (
+        <>
+          <FloatingParticles />
+          <HUD
+            ceremonyDate={date.ceremony}
+            coordinates={venue.ceremony.coordinates}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+
+          <Hero3D
+            partner1={couple.partner1.firstName}
+            partner2={couple.partner2.firstName}
+            tagline={tagline}
+            date={date.ceremony}
+            galleryImages={gallery}
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+          <SectionDivider variant="ornament" />
+
+          <StorySection
+            story={story}
+            partner1={couple.partner1.firstName}
+            partner2={couple.partner2.firstName}
+          />
+
+          <SectionDivider variant="diamond" />
+
+          <QuoteSection />
+
+          <ParallaxImage
+            src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80"
+            alt="Romantic couple"
+            caption="A love written in the stars"
+            height="70vh"
+          />
+
+          <SectionDivider variant="flourish" />
+
+          <CountdownSection
+            ceremonyDate={date.ceremony}
+            venueName={venue.ceremony.name}
+          />
+
+          <SectionDivider variant="line" />
+
+          <Gallery images={gallery} />
+
+          <ParallaxImage
+            src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1600&q=80"
+            alt="Venue at golden hour"
+            caption="Where dreams meet reality"
+            height="60vh"
+          />
+
+          <SectionDivider variant="ornament" />
+
+          <Timeline events={timeline} />
+
+          <SectionDivider variant="diamond" />
+
+          <VenueSection
+            ceremony={venue.ceremony}
+            reception={venue.reception}
+            dressCode={dressCode}
+          />
+
+          <SectionDivider variant="flourish" />
+
+          <RSVPForm questions={rsvp.questions} deadline={rsvp.deadline} />
+
+          <Footer
+            partner1={couple.partner1.firstName}
+            partner2={couple.partner2.firstName}
+            hashtag={hashtag}
+            date={date.ceremony}
+            venue={venue.ceremony.name}
+          />
+        </>
+      )}
+    </main>
   );
 }
