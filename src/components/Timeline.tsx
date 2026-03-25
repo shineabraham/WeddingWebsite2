@@ -140,9 +140,9 @@ export default function Timeline({ events }: TimelineProps) {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section className="relative bg-obsidian px-6 py-32" id="itinerary">
+    <section className="relative bg-obsidian px-4 py-20 sm:px-6 sm:py-32" id="itinerary">
       {/* Section header */}
-      <div className="mx-auto mb-20 max-w-3xl text-center">
+      <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-20">
         <motion.p
           className="font-body text-[10px] uppercase tracking-ultrawide text-gold"
           initial={{ opacity: 0 }}
@@ -152,7 +152,7 @@ export default function Timeline({ events }: TimelineProps) {
           The Celebration
         </motion.p>
         <motion.h2
-          className="mt-4 font-display text-4xl font-light tracking-luxury text-silk md:text-5xl"
+          className="mt-3 font-display text-3xl font-light tracking-luxury text-silk sm:mt-4 sm:text-4xl md:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

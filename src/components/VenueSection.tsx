@@ -26,14 +26,14 @@ export default function VenueSection({
   return (
     <section
       ref={ref}
-      className="relative bg-obsidian px-6 py-32"
+      className="relative bg-obsidian px-5 py-20 sm:px-6 sm:py-32"
       id="venue"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,_rgba(184,134,11,0.04)_0%,_transparent_60%)]" />
 
       <div className="relative mx-auto max-w-4xl">
         {/* Section header */}
-        <div className="mb-20 text-center">
+        <div className="mb-12 text-center sm:mb-20">
           <motion.p
             className="font-body text-[10px] uppercase tracking-ultrawide text-gold"
             initial={{ opacity: 0 }}
@@ -42,7 +42,7 @@ export default function VenueSection({
             The Venue
           </motion.p>
           <motion.h2
-            className="mt-4 font-display text-4xl font-light tracking-luxury text-silk md:text-5xl"
+            className="mt-3 font-display text-3xl font-light tracking-luxury text-silk sm:mt-4 sm:text-4xl md:text-5xl"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2 }}
@@ -51,7 +51,7 @@ export default function VenueSection({
           </motion.h2>
         </div>
 
-        <div className="grid gap-16 md:grid-cols-2">
+        <div className="grid gap-10 sm:gap-16 md:grid-cols-2">
           {/* Ceremony */}
           <motion.div
             className="text-center"

@@ -16,7 +16,7 @@ export default function StorySection({ story, partner1, partner2 }: StorySection
   return (
     <section
       ref={ref}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-obsidian px-6 py-32"
+      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-obsidian px-5 py-20 sm:min-h-screen sm:px-6 sm:py-32"
     >
       {/* Ambient radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(184,134,11,0.06)_0%,_transparent_60%)]" />
@@ -40,7 +40,7 @@ export default function StorySection({ story, partner1, partner2 }: StorySection
         </motion.p>
 
         <motion.h2
-          className="font-display text-4xl font-light leading-display tracking-luxury text-silk md:text-5xl lg:text-6xl"
+          className="font-display text-3xl font-light leading-display tracking-luxury text-silk sm:text-4xl md:text-5xl lg:text-6xl"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}

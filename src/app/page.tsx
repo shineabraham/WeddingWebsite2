@@ -101,7 +101,7 @@ export default function Home() {
             src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80"
             alt="Romantic couple"
             caption="A love written in the stars"
-            height="70vh"
+            height="50vh"
           />
 
           <SectionDivider variant="flourish" />

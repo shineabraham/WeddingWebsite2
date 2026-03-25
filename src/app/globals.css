@@ -17,6 +17,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent iOS bounce / overscroll */
+  overscroll-behavior: none;
 }
 
 body {
@@ -26,34 +28,56 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Mobile: use real viewport height */
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
+/* Ensure tap targets are accessible */
+button, a, input, select, textarea {
+  min-height: 44px;
 }
 
-::-webkit-scrollbar-track {
-  background: #0A0A0A;
+/* Fix iOS input zoom */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(184, 134, 11, 0.3);
-  border-radius: 2px;
+/* Custom scrollbar — desktop only */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0A0A0A;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(184, 134, 11, 0.3);
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(184, 134, 11, 0.5);
+  }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(184, 134, 11, 0.5);
-}
-
-/* Selection color */
+/* Selection */
 ::selection {
   background: rgba(184, 134, 11, 0.3);
   color: #F5F5F5;
 }
 
-/* Smooth focus transitions */
+/* Focus */
 *:focus-visible {
   outline: 1px solid rgba(184, 134, 11, 0.5);
   outline-offset: 2px;
+}
+
+/* Prevent text selection on decorative elements */
+svg, [aria-hidden="true"] {
+  user-select: none;
 }

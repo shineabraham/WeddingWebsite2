@@ -22,15 +22,14 @@ function CountdownUnit({ value, label, delay }: { value: number; label: string; 
       transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="relative">
-        {/* Decorative border */}
-        <div className="absolute -inset-3 border border-gold/10 md:-inset-4" />
-        <div className="relative flex h-20 w-20 items-center justify-center md:h-28 md:w-28">
-          <span className="font-display text-4xl font-light tabular-nums text-silk md:text-6xl">
+        <div className="absolute -inset-2 border border-gold/10 sm:-inset-3 md:-inset-4" />
+        <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20 md:h-28 md:w-28">
+          <span className="font-display text-3xl font-light tabular-nums text-silk sm:text-4xl md:text-6xl">
             {String(value).padStart(2, "0")}
           </span>
         </div>
       </div>
-      <p className="mt-4 font-body text-[9px] uppercase tracking-ultrawide text-gold/80 md:text-[10px]">
+      <p className="mt-3 font-body text-[8px] uppercase tracking-ultrawide text-gold/80 sm:mt-4 sm:text-[9px] md:text-[10px]">
         {label}
       </p>
     </motion.div>
@@ -55,10 +54,8 @@ export default function CountdownSection({ ceremonyDate, venueName }: CountdownS
   });
 
   return (
-    <section className="relative bg-obsidian px-6 py-32" id="countdown">
-      {/* Double-layer glow */}
+    <section className="relative bg-obsidian px-6 py-20 sm:py-32" id="countdown">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(184,134,11,0.08)_0%,_transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(184,134,11,0.04)_0%,_transparent_30%)]" />
 
       <div className="relative mx-auto max-w-4xl text-center">
         <motion.p
@@ -71,7 +68,7 @@ export default function CountdownSection({ ceremonyDate, venueName }: CountdownS
         </motion.p>
 
         <motion.h2
-          className="mt-4 font-display text-4xl font-light tracking-luxury text-silk md:text-5xl"
+          className="mt-4 font-display text-3xl font-light tracking-luxury text-silk sm:text-4xl md:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -81,47 +78,29 @@ export default function CountdownSection({ ceremonyDate, venueName }: CountdownS
         </motion.h2>
 
         <motion.p
-          className="mt-4 font-body text-sm text-silk/70"
+          className="mt-3 font-body text-xs text-silk/70 sm:mt-4 sm:text-sm"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          {formattedDate} &middot; {venueName}
+          {formattedDate}
+        </motion.p>
+        <motion.p
+          className="mt-1 font-body text-xs text-silk/50"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.35 }}
+        >
+          {venueName}
         </motion.p>
 
-        {/* Countdown grid */}
-        <div className="mt-16 flex items-center justify-center gap-6 md:gap-12">
+        {/* Countdown — 2x2 on mobile, row on desktop */}
+        <div className="mt-10 grid grid-cols-2 gap-6 sm:mt-16 sm:flex sm:items-center sm:justify-center sm:gap-8 md:gap-12">
           <CountdownUnit value={countdown.days} label="Days" delay={0.4} />
-          <motion.span
-            className="mt-[-20px] font-display text-2xl text-gold/40"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
-            :
-          </motion.span>
           <CountdownUnit value={countdown.hours} label="Hours" delay={0.5} />
-          <motion.span
-            className="mt-[-20px] font-display text-2xl text-gold/40"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-          >
-            :
-          </motion.span>
           <CountdownUnit value={countdown.minutes} label="Minutes" delay={0.6} />
-          <motion.span
-            className="mt-[-20px] font-display text-2xl text-gold/40"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.7 }}
-          >
-            :
-          </motion.span>
           <CountdownUnit value={countdown.seconds} label="Seconds" delay={0.7} />
         </div>
       </div>

@@ -35,115 +35,165 @@ export default function Hero3D({
     damping: 30,
   });
 
-  const layer1Scale = useTransform(smoothProgress, [0, 1], [1, 2.5]);
-  const layer1Opacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
-  const layer2Scale = useTransform(smoothProgress, [0, 1], [0.8, 2]);
-  const layer2Opacity = useTransform(smoothProgress, [0.1, 0.6], [1, 0]);
-  const layer3Scale = useTransform(smoothProgress, [0, 1], [0.6, 1.8]);
-  const layer3Opacity = useTransform(smoothProgress, [0.2, 0.7], [1, 0]);
+  // Parallax for the image gallery section (bottom half)
+  const galleryY = useTransform(smoothProgress, [0, 1], ["0%", "-30%"]);
+  const galleryScale = useTransform(smoothProgress, [0, 1], [1, 1.15]);
+  const galleryOpacity = useTransform(smoothProgress, [0.3, 0.8], [1, 0]);
+
+  // Text fades out on scroll
+  const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
+  const textY = useTransform(smoothProgress, [0, 0.3], ["0%", "-10%"]);
 
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   });
 
   return (
-    <section ref={containerRef} className="relative h-[300vh]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-obsidian">
-        {/* Ambient gradient background */}
+    <section ref={containerRef} className="relative h-[200vh]">
+      <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden bg-obsidian">
+        {/* Ambient gradient */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(184,134,11,0.08)_0%,_transparent_70%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_80%,_rgba(184,134,11,0.04)_0%,_transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,_rgba(212,168,67,0.04)_0%,_transparent_50%)]" />
         </div>
 
-        {/* Z-Axis floating frames */}
-        <div className="absolute inset-0 flex items-center justify-center" style={{ perspective: "1200px" }}>
-          {/* Layer 1 */}
+        {/* ===== TOP: Text area — clear, no image behind ===== */}
+        <motion.div
+          className="relative z-20 flex flex-shrink-0 flex-col items-center justify-center px-6 pt-16 pb-8 text-center md:pt-20 md:pb-10"
+          style={{ opacity: textOpacity, y: textY }}
+        >
+          {/* Decorative top line */}
           <motion.div
-            className="absolute flex items-center justify-center"
-            style={{ scale: layer1Scale, opacity: layer1Opacity }}
+            className="mb-4 h-px w-16 bg-gradient-to-r from-transparent via-gold/50 to-transparent md:mb-6 md:w-20"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.3, duration: 1.2 }}
+          />
+
+          <motion.p
+            className="mb-3 font-body text-[10px] uppercase tracking-ultrawide text-gold md:mb-4 md:text-[11px]"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
           >
-            <div className="relative h-[60vh] w-[40vw] max-w-[500px] overflow-hidden border border-gold/20">
+            {formattedDate}
+          </motion.p>
+
+          <motion.h2
+            className="font-display text-3xl font-light tracking-luxury text-silk sm:text-4xl md:text-5xl lg:text-6xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 1 }}
+          >
+            {partner1}
+          </motion.h2>
+
+          <motion.div
+            className="my-2 flex items-center gap-3 md:my-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="h-px w-6 bg-gold/30 md:w-10" />
+            <span className="font-display text-xl italic text-gold md:text-2xl">&</span>
+            <div className="h-px w-6 bg-gold/30 md:w-10" />
+          </motion.div>
+
+          <motion.h2
+            className="font-display text-3xl font-light tracking-luxury text-silk sm:text-4xl md:text-5xl lg:text-6xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 1 }}
+          >
+            {partner2}
+          </motion.h2>
+
+          <motion.p
+            className="mt-3 font-display text-sm italic text-silk/70 md:mt-4 md:text-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
+            {tagline}
+          </motion.p>
+
+          {/* Decorative bottom line */}
+          <motion.div
+            className="mt-4 h-px w-12 bg-gradient-to-r from-transparent via-gold/30 to-transparent md:mt-6 md:w-16"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 1.0, duration: 1 }}
+          />
+        </motion.div>
+
+        {/* ===== BOTTOM: Image gallery — fills remaining space ===== */}
+        <motion.div
+          className="relative z-10 flex flex-1 items-center justify-center overflow-hidden px-4 pb-6 md:px-8 md:pb-10"
+          style={{ y: galleryY, scale: galleryScale, opacity: galleryOpacity }}
+        >
+          {/* Mobile: single featured image + 2 smaller */}
+          <div className="flex h-full w-full max-w-5xl items-center justify-center gap-3 md:gap-5">
+            {/* Left small image — hidden on very small screens */}
+            <motion.div
+              className="hidden h-[55%] w-[22%] overflow-hidden border border-gold/15 sm:block"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.4, duration: 1 }}
+            >
+              <img
+                src={galleryImages[1]?.src || "https://placehold.co/300x450"}
+                alt={galleryImages[1]?.alt || ""}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 to-transparent" />
+            </motion.div>
+
+            {/* Center large image */}
+            <motion.div
+              className="relative h-[70%] w-[65%] overflow-hidden border border-gold/20 sm:h-[75%] sm:w-[40%]"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 1 }}
+            >
               <img
                 src={galleryImages[0]?.src || "https://placehold.co/500x750"}
                 alt={galleryImages[0]?.alt || "Wedding photo"}
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30" />
-              <div className="absolute inset-0 bg-gold/5 mix-blend-multiply" />
-            </div>
-          </motion.div>
-
-          {/* Layer 2 */}
-          <motion.div
-            className="absolute flex items-center justify-center"
-            style={{ scale: layer2Scale, opacity: layer2Opacity }}
-          >
-            <div className="flex gap-6">
-              {galleryImages.slice(1, 3).map((img, i) => (
-                <div
-                  key={i}
-                  className="relative h-[40vh] w-[25vw] max-w-[300px] overflow-hidden border border-gold/15"
-                  style={{ transform: `translateX(${i === 0 ? "-20%" : "20%"})` }}
-                >
-                  <img src={img.src} alt={img.alt} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 via-transparent to-obsidian/20" />
-                  <div className="absolute inset-0 bg-gold/5 mix-blend-multiply" />
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Layer 3 */}
-          <motion.div
-            className="absolute flex items-center justify-center"
-            style={{ scale: layer3Scale, opacity: layer3Opacity }}
-          >
-            <div className="flex gap-4">
-              {galleryImages.slice(3, 6).map((img, i) => (
-                <div
-                  key={i}
-                  className="relative h-[30vh] w-[18vw] max-w-[220px] overflow-hidden border border-gold/10"
-                >
-                  <img src={img.src} alt={img.alt} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian/50 via-transparent to-obsidian/10" />
-                  <div className="absolute inset-0 bg-gold/5 mix-blend-multiply" />
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Center text overlay */}
-          <motion.div
-            className="absolute z-40 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 1 }}
-          >
-            <p className="font-body text-[10px] uppercase tracking-ultrawide text-gold-light">
-              {formattedDate}
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-light tracking-luxury text-silk md:text-6xl">
-              {partner1} <span className="italic text-gold">&</span> {partner2}
-            </h2>
-            <p className="mt-4 font-display text-lg italic text-silk/80">
-              {tagline}
-            </p>
-
-            <motion.div
-              className="mt-12 flex flex-col items-center"
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <p className="mb-2 font-body text-[9px] uppercase tracking-ultrawide text-gold/70">
-                Scroll to explore
-              </p>
-              <div className="h-8 w-px bg-gradient-to-b from-gold/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/50 via-transparent to-obsidian/20" />
+              <div className="absolute inset-0 bg-gold/[0.03] mix-blend-multiply" />
             </motion.div>
+
+            {/* Right small image — hidden on very small screens */}
+            <motion.div
+              className="hidden h-[55%] w-[22%] overflow-hidden border border-gold/15 sm:block"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.5, duration: 1 }}
+            >
+              <img
+                src={galleryImages[2]?.src || "https://placehold.co/300x450"}
+                alt={galleryImages[2]?.alt || ""}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 to-transparent" />
+            </motion.div>
+          </div>
+
+          {/* Scroll indicator — overlaid at bottom of gallery */}
+          <motion.div
+            className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center md:bottom-8"
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <p className="mb-1 font-body text-[8px] uppercase tracking-ultrawide text-gold/60 md:text-[9px]">
+              Scroll
+            </p>
+            <div className="h-6 w-px bg-gradient-to-b from-gold/40 to-transparent md:h-8" />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

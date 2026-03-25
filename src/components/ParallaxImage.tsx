@@ -14,7 +14,7 @@ export default function ParallaxImage({
   src,
   alt,
   caption,
-  height = "60vh",
+  height = "50vh",
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement>(null);
 

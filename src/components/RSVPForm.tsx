@@ -51,10 +51,9 @@ export default function RSVPForm({ questions, deadline }: RSVPFormProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen items-center justify-center bg-obsidian px-6 py-32"
+      className="relative flex min-h-[80vh] items-center justify-center bg-obsidian px-4 py-20 sm:min-h-screen sm:px-6 sm:py-32"
       id="rsvp"
     >
-      {/* Ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(184,134,11,0.06)_0%,_transparent_60%)]" />
 
       <motion.div
@@ -64,20 +63,20 @@ export default function RSVPForm({ questions, deadline }: RSVPFormProps) {
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Header */}
-        <div className="mb-12 text-center">
+        <div className="mb-8 text-center sm:mb-12">
           <p className="font-body text-[10px] uppercase tracking-ultrawide text-gold">
             Kindly Respond
           </p>
-          <h2 className="mt-4 font-display text-4xl font-light tracking-luxury text-silk md:text-5xl">
+          <h2 className="mt-3 font-display text-3xl font-light tracking-luxury text-silk sm:mt-4 sm:text-4xl md:text-5xl">
             RSVP
           </h2>
-          <p className="mt-3 font-body text-xs text-silk/60">
+          <p className="mt-2 font-body text-xs text-silk/60 sm:mt-3">
             Please respond by {deadlineFormatted}
           </p>
         </div>
 
-        {/* Progress bar */}
-        <div className="mb-10 h-px w-full bg-gold/10">
+        {/* Progress */}
+        <div className="mb-8 h-px w-full bg-gold/10 sm:mb-10">
           <motion.div
             className="h-full bg-gold/50"
             animate={{ width: `${((step + 1) / questions.length) * 100}%` }}
@@ -89,71 +88,55 @@ export default function RSVPForm({ questions, deadline }: RSVPFormProps) {
           {submitted ? (
             <motion.div
               key="success"
-              className="text-center"
+              className="py-8 text-center"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
             >
               <motion.div
-                className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-gold/30"
+                className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 sm:h-16 sm:w-16"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 15,
-                  delay: 0.2,
-                }}
+                transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  className="text-gold"
-                >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gold">
                   <path d="M20 6L9 17l-5-5" />
                 </svg>
               </motion.div>
-              <h3 className="font-display text-3xl font-light tracking-luxury text-silk">
+              <h3 className="font-display text-2xl font-light tracking-luxury text-silk sm:text-3xl">
                 Thank You
               </h3>
-              <p className="mt-4 font-body text-sm text-silk/70">
-                We are overjoyed and cannot wait to celebrate with you.
+              <p className="mt-3 font-body text-sm text-silk/70 sm:mt-4">
+                We cannot wait to celebrate with you.
               </p>
             </motion.div>
           ) : (
             <motion.div
               key={step}
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
+              exit={{ opacity: 0, x: -30 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Question label */}
-              <label className="mb-1 block font-display text-2xl font-light tracking-luxury text-silk md:text-3xl">
+              <label className="mb-1 block font-display text-xl font-light tracking-luxury text-silk sm:text-2xl md:text-3xl">
                 {currentQ.label}
               </label>
-              <p className="mb-8 font-body text-xs text-silk/60">
+              <p className="mb-6 font-body text-[11px] text-silk/50 sm:mb-8 sm:text-xs">
                 Step {step + 1} of {questions.length}
               </p>
 
-              {/* Input */}
               {currentQ.type === "select" ? (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2 sm:gap-3">
                   {currentQ.options?.map((opt) => (
                     <motion.button
                       key={opt}
-                      className={`border px-6 py-4 text-left font-body text-sm tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 ${
+                      className={`border px-5 py-3.5 text-left font-body text-sm tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 sm:px-6 sm:py-4 ${
                         answers[currentQ.id] === opt
                           ? "border-gold/50 bg-gold/10 text-gold"
-                          : "border-gold/15 bg-transparent text-silk/70 hover:border-gold/30 hover:text-silk/70"
+                          : "border-gold/15 bg-transparent text-silk/70 hover:border-gold/30"
                       }`}
                       onClick={() => handleAnswer(opt)}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       {opt}
                     </motion.button>
@@ -165,17 +148,17 @@ export default function RSVPForm({ questions, deadline }: RSVPFormProps) {
                   placeholder={currentQ.placeholder}
                   value={answers[currentQ.id] || ""}
                   onChange={(e) => handleAnswer(e.target.value)}
-                  className="w-full border-b border-gold/20 bg-transparent py-4 font-body text-lg text-silk placeholder:text-silk/40 focus:border-gold/50 focus:outline-none"
+                  className="w-full border-b border-gold/20 bg-transparent py-3 font-body text-base text-silk placeholder:text-silk/40 focus:border-gold/50 focus:outline-none sm:py-4 sm:text-lg"
                 />
               )}
 
-              {/* Navigation */}
-              <div className="mt-12 flex items-center justify-between">
+              {/* Nav — larger touch targets */}
+              <div className="mt-8 flex items-center justify-between sm:mt-12">
                 <button
-                  className={`font-body text-xs uppercase tracking-ultrawide transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 ${
+                  className={`min-h-[44px] min-w-[44px] font-body text-xs uppercase tracking-ultrawide transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 ${
                     step === 0
-                      ? "cursor-not-allowed text-silk/30"
-                      : "text-silk/60 hover:text-silk/70 active:scale-95"
+                      ? "cursor-not-allowed text-silk/20"
+                      : "text-silk/60 hover:text-silk/80 active:scale-95"
                   }`}
                   onClick={handleBack}
                   disabled={step === 0}
@@ -184,9 +167,8 @@ export default function RSVPForm({ questions, deadline }: RSVPFormProps) {
                 </button>
 
                 <motion.button
-                  className="group relative overflow-hidden border border-gold/30 px-8 py-3 font-body text-xs uppercase tracking-ultrawide text-gold transition-colors hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian active:scale-[0.97]"
+                  className="group relative min-h-[44px] overflow-hidden border border-gold/30 px-6 py-3 font-body text-xs uppercase tracking-ultrawide text-gold transition-colors hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 sm:px-8"
                   onClick={handleNext}
-                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                 >
                   <span className="relative z-10">
